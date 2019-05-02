@@ -14,15 +14,19 @@ public class DBconnect {
 		try {
 			Class.forName("oracle.jdbc.OracleDriver");
 			conn = DriverManager.getConnection("jdbc:oracle:thin:@//localhost:1521/xe","asdf","1234");
-		} catch (Exception e) {}
+		} catch (Exception e) {
+			System.out.println("연결오류");
+		}
 		return conn;
 	}
 	public static ResultSet sendQuery(String query){
+		if(conn == null)getConn();
 		try {
-			if(conn == null)getConn();
 			pstmt = conn.prepareStatement(query);
 			res = pstmt.executeQuery();
-		} catch (Exception e) {}
+		} catch (Exception e) {
+			System.out.println("쿼리문 오류");
+		}
 		return res;
 	}
 	public static Vector<String> sendQueryVecter(String query,int length){
@@ -32,6 +36,7 @@ public class DBconnect {
 			for(int i = 0 ; i <length;i++) {
 				result.add(res.getString(i+1));
 			}
+			res.close();
 		} catch (Exception e) {}
 		return result;
 	}
@@ -39,7 +44,7 @@ public class DBconnect {
 		sendQuery(query);
 		try {
 			res.next();
-			return res.getString(1);
+			return res.getString(mode);
 		} catch (Exception e) {}
 		return "";
 	}

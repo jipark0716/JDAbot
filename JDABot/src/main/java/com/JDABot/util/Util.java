@@ -1,5 +1,6 @@
 package com.JDABot.util;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Random;
 
@@ -24,12 +25,19 @@ public class Util {
 	
 	public static <E> void shuffle(List<E> input){
 		Random r = new Random();
-		if(input.size()==0) {System.out.println("½´¹ß"); return;}
+		if(input.size()==0) {return;}
 		for(int i = input.size() ; i >= 0;i--) {
 			int temp = i==0?0:r.nextInt(i);
 			input.add(input.get(temp));
 			input.remove(temp);
 		}
+	}
+	public static long getNextTime(int nextTime) {
+		int nowTime = 0;
+		nowTime = Integer.parseInt(new SimpleDateFormat("HHmm").format(System.currentTimeMillis()));
+		nowTime = (nowTime/100)*60 + nowTime%100;
+		nextTime = (nextTime/100)*60 + nextTime%100;
+		return (nextTime - nowTime)*1000*60;
 	}
 	
 }
