@@ -1,7 +1,10 @@
 package com.JDABot;
 
 import com.JDABot.*;
+import com.JDABot.Listener.ChangeMemberOption;
 import com.JDABot.Listener.MessageListener;
+import com.JDABot.Listener.Ready;
+import com.JDABot.util.SetAlarm;
 
 import javax.security.auth.login.LoginException;
 
@@ -21,11 +24,13 @@ public class Main{
 	public static void main(String[] args){
 		JDA jda = null;
 		try {
-			jda = new JDABuilder("NTcwNTMxMTk4MzQ3MjQ3NjE2.XMAitQ.Lx7IZ0GJLdF7DloXKC73VdWIN_k").addEventListeners(new MessageListener()).build();
+			jda = new JDABuilder("NTcwNTMxMTk4MzQ3MjQ3NjE2.XMAitQ.Lx7IZ0GJLdF7DloXKC73VdWIN_k").build();
 		} catch (Exception e) {
 			System.out.println("연결 실패");
 		}
-		System.out.println("연결 성공");
+		jda.addEventListener(new Ready());
+		jda.addEventListener(new MessageListener());
+//		jda.addEventListener(new ChangeMemberOption());
 	}
 	
 }

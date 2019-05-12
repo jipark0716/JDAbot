@@ -18,6 +18,7 @@ public class Ready extends ListenerAdapter{
 	public void onReady(ReadyEvent event) {
 		System.out.println("연결 성공");
 		JDA jda = event.getJDA();
+		
 		new SetAlarm(jda).start();
 	}
 }
