@@ -1,5 +1,7 @@
 package com.JDABot.util;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Time;
 import java.util.*;
 
@@ -10,10 +12,11 @@ import net.dv8tion.jda.api.entities.TextChannel;
 
 public class SetAlarm extends Thread{
 
-	Vector<String> res = new Vector<String>();
+	ResultSet res = null;
 	int nextEventTime = 0;
 	private JDA jda = null;
 	MyVector<TextChannel> target = null;
+	long waitTime = Util.getNextTime(2400);
 	
 	public SetAlarm(JDA jda) {
 		super();
@@ -29,30 +32,30 @@ public class SetAlarm extends Thread{
 		StringBuffer result = new StringBuffer();
 		while(true) {
 			result.delete(0,result.length());
-			res = DBconnect.sendQueryVecter("select * from next_event_time_view", 3);
-		  try {
-			if(res == null) {
-				Thread.sleep(Util.getNextTime(2400));
-				continue;
+			res = DBconnect.sendQuery("select * from next_event_view");
+			try {
+				for(int system = 0;res.next();system++) {
+					if(system==0) waitTime = Util.getNextTime(res.getInt(1));
+					result.append(res.getString(2)+"\n"+res.getString(3)+"\n");
+				}
+				DBconnect.close();
+			} catch (Exception e) {
+				System.out.println(e.getClass().getName());
+				System.out.println(e.getMessage());
 			}
-			Thread.sleep(Util.getNextTime(Integer.parseInt(res.get(0))));	
-		  }catch (Exception e) {
-			  System.out.println(e.getClass().getName());
-		  }
-			for(int i = 1 ; i <res.size();i++) {
-				result.append(res.get(i)+"\n");
-			}
-			for(Iterator<TextChannel> textChannel = target.iterator();textChannel.hasNext();) {
+			try {sleep(waitTime);}
+			catch (Exception e) {System.out.println("setAlarm.java 48");};
+			
+			for(Iterator<TextChannel> targetTC = target.iterator();targetTC.hasNext();) {
+				TextChannel temp = targetTC.next();
 			  try {
-				textChannel.next().sendMessage(result).queue();
+				temp.sendMessage(result).queue();
 			  } catch (Exception e) {
+				System.out.println(temp);
 				System.out.println(e.getClass().getName());
 				System.out.println(e.getMessage());
 			  }
 			}
-		  try {Thread.sleep(60*1000);}
-		  catch (Exception e) {System.out.println(e.getClass().getName());}
-			res.clear();
 		} 
 	}
 }

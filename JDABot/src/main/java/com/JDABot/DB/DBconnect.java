@@ -51,5 +51,14 @@ public class DBconnect {
 		} catch (Exception e) {}
 		return "";
 	}
+	public static void close() {
+		try {
+			res.close();
+			pstmt.close();
+			result.clear();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
 	
 }

@@ -1,5 +1,7 @@
 package com.JDABot.util;
 
+import java.io.ObjectInputStream.GetField;
+import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Random;
@@ -39,5 +41,12 @@ public class Util {
 		nextTime = (nextTime/100)*60 + nextTime%100;
 		return (nextTime - nowTime)*1000*60;
 	}
-	
+	public static void printError(int errorCode,Method method,String msg) {
+		if(errorCode == -1) return;
+
+		System.out.print(method.getClass().getName()+" -> ");
+		System.out.println(method.getName());
+		System.out.print(errorCode+" : ");
+		System.out.println(msg);
+	}
 }

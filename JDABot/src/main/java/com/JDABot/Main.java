@@ -1,10 +1,13 @@
 package com.JDABot;
 
 import com.JDABot.*;
+import com.JDABot.DB.DBconnect;
 import com.JDABot.Listener.ChangeMemberOption;
 import com.JDABot.Listener.MessageListener;
 import com.JDABot.Listener.Ready;
 import com.JDABot.util.SetAlarm;
+
+import java.util.Scanner;
 
 import javax.security.auth.login.LoginException;
 
@@ -22,6 +25,9 @@ import net.dv8tion.jda.api.managers.GuildController;
 public class Main{
 
 	public static void main(String[] args){
+		
+		Scanner scanner = new Scanner(System.in);
+		
 		JDA jda = null;
 		try {
 			jda = new JDABuilder("NTcwNTMxMTk4MzQ3MjQ3NjE2.XMAitQ.Lx7IZ0GJLdF7DloXKC73VdWIN_k").build();
@@ -31,6 +37,14 @@ public class Main{
 		jda.addEventListener(new Ready());
 		jda.addEventListener(new MessageListener());
 //		jda.addEventListener(new ChangeMemberOption());
+		
+		if(scanner.next().equals("exit")) {
+			DBconnect.close();
+			jda.shutdownNow();
+			scanner.close();
+			System.exit(1);
+		}
+		
 	}
 	
 }
