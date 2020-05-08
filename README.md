@@ -1,10 +1,7 @@
-# 에러 코드
+# 사용법
 
--1 : 실행전 
-0 : 올바른 실행 
-1 : 함수 레퍼런스 부족
-2 : 함수 레퍼런스 초과
-15 : 메시지 보낼수 없음
-16 : voiceChannel 옴길수 없음
-31 : name으로 VoiceChannel 을 찾을 수 없음
-32 : name으로 맴버 찾을 수 없음
+### 팀 랜덤배정
+사다리 {voiceChannel} {teamCount}
+
+### 팀에 맞춰 음성채팅 이동
+팀결정 {messageId} {voiceChannel} {voiceChannel}
